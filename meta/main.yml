@@ -1,0 +1,6 @@
+---
+
+
+dependencies:
+  - role: apt
+    apt_packages: '{{ supervisor_packages }}'

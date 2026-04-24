@@ -1,0 +1,8 @@
+---
+#
+
+
+supervisor_packages:
+  - supervisor
+
+supervisor_minfds: 40960

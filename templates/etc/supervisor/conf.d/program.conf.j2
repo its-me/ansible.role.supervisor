@@ -1,0 +1,174 @@
+[program:{{ supervisor_program }}]
+{% if supervisor_command is defined %}
+command={{ supervisor_command }}                     ; the program (relative uses PATH, can take args)
+{% else %}
+;command=/bin/cat                     ; the program (relative uses PATH, can take args)
+{% endif -%}
+
+{% if supervisor_process_name is defined %}
+process_name={{ supervisor_process_name }}        ; process_name expr (default %(program_name)s)
+{% else %}
+;process_name=%(program_name)s        ; process_name expr (default %(program_name)s)
+{% endif -%}
+
+{% if supervisor_numprocs is defined %}
+numprocs={{ supervisor_numprocs }}                           ; number of processes copies to start (def 1)
+{% else %}
+;numprocs=1                           ; number of processes copies to start (def 1)
+{% endif -%}
+
+{% if supervisor_directory is defined %}
+directory={{ supervisor_directory }}                       ; directory to cwd to before exec (def no cwd)
+{% else %}
+;directory=/tmp                       ; directory to cwd to before exec (def no cwd)
+{% endif -%}
+
+{% if supervisor_umask is defined %}
+umask={{ supervisor_umask }}                            ; umask for process (default None)
+{% else %}
+;umask=022                            ; umask for process (default None)
+{% endif -%}
+
+{% if supervisor_priority is defined %}
+priority={{ supervisor_priority }}                         ; the relative start priority (default 999)
+{% else %}
+;priority=999                         ; the relative start priority (default 999)
+{% endif -%}
+
+{% if supervisor_autostart is defined %}
+autostart={{ supervisor_autostart }}                       ; start at supervisord start (default: true)
+{% else %}
+;autostart=true                       ; start at supervisord start (default: true)
+{% endif -%}
+
+{% if supervisor_autorestart is defined %}
+autorestart={{ supervisor_autorestart }}               ; whether/when to restart (default: unexpected)
+{% else %}
+;autorestart=unexpected               ; whether/when to restart (default: unexpected)
+{% endif -%}
+
+{% if supervisor_startsecs is defined %}
+startsecs={{ supervisor_startsecs }}                          ; number of secs prog must stay running (def. 1)
+{% else %}
+;startsecs=1                          ; number of secs prog must stay running (def. 1)
+{% endif -%}
+
+{% if supervisor_startretries is defined %}
+startretries={{ supervisor_startretries }}                       ; max # of serial start failures (default 3)
+{% else %}
+;startretries=3                       ; max # of serial start failures (default 3)
+{% endif -%}
+
+{% if supervisor_exitcodes is defined %}
+exitcodes={{ supervisor_exitcodes }}                        ; 'expected' exit codes for process (default 0,2)
+{% else %}
+;exitcodes=0,2                        ; 'expected' exit codes for process (default 0,2)
+{% endif -%}
+
+{% if supervisor_stopsignal is defined %}
+stopsignal={{ supervisor_stopsignal }}                      ; signal used to kill process (default TERM)
+{% else %}
+;stopsignal=QUIT                      ; signal used to kill process (default TERM)
+{% endif -%}
+
+{% if supervisor_stopwaitsecs is defined %}
+stopwaitsecs={{ supervisor_stopwaitsecs }}                      ; max num secs to wait b4 SIGKILL (default 10)
+{% else %}
+;stopwaitsecs=10                      ; max num secs to wait b4 SIGKILL (default 10)
+{% endif -%}
+
+{% if supervisor_stopasgroup is defined %}
+stopasgroup={{ supervisor_stopasgroup }}                    ; send stop signal to the UNIX process group (default false)
+{% else %}
+;stopasgroup=false                    ; send stop signal to the UNIX process group (default false)
+{% endif -%}
+
+{% if supervisor_killasgroup is defined %}
+killasgroup={{ supervisor_killasgroup }}                    ; SIGKILL the UNIX process group (def false)
+{% else %}
+;killasgroup=false                    ; SIGKILL the UNIX process group (def false)
+{% endif -%}
+
+{% if supervisor_user is defined %}
+user={{ supervisor_user }}                          ; setuid to this UNIX account to run the program
+{% else %}
+;user=chrism                          ; setuid to this UNIX account to run the program
+{% endif -%}
+
+{% if supervisor_redirect_stderr is defined %}
+redirect_stderr={{ supervisor_redirect_stderr }}                 ; redirect proc stderr to stdout (default false)
+{% else %}
+;redirect_stderr=true                 ; redirect proc stderr to stdout (default false)
+{% endif -%}
+
+{% if supervisor_stdout_logfile is defined %}
+stdout_logfile={{ supervisor_stdout_logfile }}               ; stdout log path, NONE for none; default AUTO
+{% else %}
+;stdout_logfile=/a/path               ; stdout log path, NONE for none; default AUTO
+{% endif -%}
+
+{% if supervisor_stdout_logfile_maxbytes is defined %}
+stdout_logfile_maxbytes={{ supervisor_stdout_logfile_maxbytes }}          ; max # logfile bytes b4 rotation (default 50MB)
+{% else %}
+;stdout_logfile_maxbytes=1MB          ; max # logfile bytes b4 rotation (default 50MB)
+{% endif -%}
+
+{% if supervisor_stdout_logfile_backups is defined %}
+stdout_logfile_backups={{ supervisor_stdout_logfile_backups }}            ; # of stdout logfile backups (default 10)
+{% else %}
+;stdout_logfile_backups=10            ; # of stdout logfile backups (default 10)
+{% endif -%}
+
+{% if supervisor_stdout_capture_maxbytes is defined %}
+stdout_capture_maxbytes={{ supervisor_stdout_capture_maxbytes }}          ; number of bytes in 'capturemode' (default 0)
+{% else %}
+;stdout_capture_maxbytes=1MB          ; number of bytes in 'capturemode' (default 0)
+{% endif -%}
+
+{% if supervisor_stdout_events_enabled is defined %}
+stdout_events_enabled={{ supervisor_stdout_events_enabled }}          ; emit events on stdout writes (default false)
+{% else %}
+;stdout_events_enabled=false          ; emit events on stdout writes (default false)
+{% endif -%}
+
+{% if supervisor_stderr_logfile is defined %}
+stderr_logfile={{ supervisor_stderr_logfile }}               ; stderr log path, NONE for none; default AUTO
+{% else %}
+;stderr_logfile=/a/path               ; stderr log path, NONE for none; default AUTO
+{% endif -%}
+
+{% if supervisor_stderr_logfile_maxbytes is defined %}
+stderr_logfile_maxbytes={{ supervisor_stderr_logfile_maxbytes }}          ; max # logfile bytes b4 rotation (default 50MB)
+{% else %}
+;stderr_logfile_maxbytes=1MB          ; max # logfile bytes b4 rotation (default 50MB)
+{% endif -%}
+
+{% if supervisor_stderr_logfile_backups is defined %}
+stderr_logfile_backups={{ supervisor_stderr_logfile_backups }}            ; # of stderr logfile backups (default 10)
+{% else %}
+;stderr_logfile_backups=10            ; # of stderr logfile backups (default 10)
+{% endif -%}
+
+{% if supervisor_stderr_capture_maxbytes is defined %}
+stderr_capture_maxbytes={{ supervisor_stderr_capture_maxbytes }}          ; number of bytes in 'capturemode' (default 0)
+{% else %}
+;stderr_capture_maxbytes=1MB          ; number of bytes in 'capturemode' (default 0)
+{% endif -%}
+
+{% if supervisor_stderr_events_enabled is defined %}
+stderr_events_enabled={{ supervisor_stderr_events_enabled }}          ; emit events on stderr writes (default false)
+{% else %}
+;stderr_events_enabled=false          ; emit events on stderr writes (default false)
+{% endif -%}
+
+{% if supervisor_environment is defined %}
+environment={{ supervisor_environment }}              ; process environment additions (def no adds)
+{% else %}
+;environment=A="1",B="2"              ; process environment additions (def no adds)
+{% endif -%}
+
+{% if supervisor_serverurl is defined %}
+serverurl={{ supervisor_serverurl }}                       ; override serverurl computation (childutils)
+{% else %}
+;serverurl=AUTO                       ; override serverurl computation (childutils)
+{% endif -%}

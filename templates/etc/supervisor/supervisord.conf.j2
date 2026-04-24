@@ -1,0 +1,99 @@
+; Main supervisor config file gen by {{ role_name }} role.
+;
+; For more information on the config file, please see:
+; http://supervisord.org/configuration.html
+
+[unix_http_server]
+{% if supervisor_unix_file is defined %}
+file={{ supervisor_unix_file }}       ; (the path to the socket file)
+{% else %}
+file=/var/run/supervisor.sock       ; (the path to the socket file)
+{% endif -%}
+
+{% if supervisor_unix_chmod is defined %}
+chmod={{ supervisor_unix_chmod }}                         ; socket file mode (default 0700)
+{% else %}
+;chmod=0700                         ; socket file mode (default 0700)
+{% endif -%}
+
+{% if supervisor_unix_chown is defined %}
+chown={{ supervisor_unix_chown }}               ; socket file uid:gid owner
+{% else %}
+;chown=nobody:nogroup               ; socket file uid:gid owner
+{% endif -%}
+
+{% if (supervisor_unix_user is defined and supervisor_unix_pass is defined) %}
+username={{ supervisor_unix_user }}                      ; (default is no username (open server))
+password={{ supervisor_unix_pass }}                       ; (default is no password (open server))
+{% else %}
+;username=user                      ; (default is no username (open server))
+;password=123                       ; (default is no password (open server))
+{% endif %}
+
+{% if supervisor_inet_port is defined %}
+[inet_http_server]                 ; inet (TCP) server disabled by default
+port={{ supervisor_inet_port }}                ; (ip_address:port specifier, *:port for all iface)
+{% else %}
+;[inet_http_server]                 ; inet (TCP) server disabled by default
+;port=127.0.0.1:9001                ; (ip_address:port specifier, *:port for all iface)
+{% endif -%}
+
+{% if (supervisor_inet_port is defined and supervisor_inet_user is defined and supervisor_inet_pass is defined) %}
+username={{ supervisor_inet_user }}                      ; (default is no username (open server))
+password={{ supervisor_inet_pass }}                       ; (default is no password (open server))
+{% else %}
+;username=user                      ; (default is no username (open server))
+;password=123                       ; (default is no password (open server))
+{% endif %}
+
+[supervisord]
+{% if supervisor_logfile is defined %}
+logfile={{ supervisor_logfile }}  ; (main log file;default $CWD/supervisord.log)
+{% else %}
+logfile=/var/log/supervisor/supervisord.log  ; (main log file;default $CWD/supervisord.log)
+{% endif -%}
+
+logfile_maxbytes=50MB               ; (max main logfile bytes b4 rotation;default 50MB)
+logfile_backups=10                  ; (num of main logfile rotation backups;default 10)
+loglevel=info                       ; (log level;default info; others: debug,warn,trace)
+pidfile=/var/run/supervisord.pid    ; (supervisord pidfile;default supervisord.pid)
+nodaemon=false                      ; (start in foreground if true;default false)
+minfds={{ supervisor_minfds }}                         ; (min. avail startup file descriptors;default 1024)
+minprocs=200                        ; (min. avail process descriptors;default 200)
+;umask=022                          ; (process file creation umask;default 022)
+;user=chrism                        ; (default is current user, required if root)
+;identifier=supervisor              ; (supervisord identifier, default is 'supervisor')
+;directory=/tmp                     ; (default is not to cd during start)
+;nocleanup=true                     ; (don't clean up tempfiles at start;default false)
+{% if supervisor_childlogdir is defined %}
+childlogdir={{ supervisor_childlogdir }}     ; ('AUTO' child log dir, default $TEMP)
+{% else %}
+childlogdir=/var/log/supervisor     ; ('AUTO' child log dir, default $TEMP)
+{% endif -%}
+
+;environment=KEY="value"            ; (key value pairs to add to environment)
+;strip_ansi=false                   ; (strip ansi escape codes in logs; def. false)
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+{% if supervisor_ctl_serverurl is defined %}
+serverurl={{ supervisor_ctl_serverurl }} ; use a unix:// URL  for a unix socket
+{% else %}
+serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+{% endif -%}
+
+{% if (supervisor_ctl_user is defined and  supervisor_ctl_pass is defined) %}
+username={{ supervisor_ctl_user }}                     ; should be same as http_username if set
+password={{ supervisor_ctl_pass }}                       ; should be same as http_password if set
+{% else %}
+;username=chris                     ; should be same as http_username if set
+;password=123                       ; should be same as http_password if set
+{% endif -%}
+
+;prompt=mysupervisor                ; cmd line prompt (default "supervisor")
+;history_file=~/.sc_history         ; use readline history if available
+
+[include]
+files = /etc/supervisor/conf.d/*.conf

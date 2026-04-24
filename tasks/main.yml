@@ -1,0 +1,37 @@
+---
+# supervisor role
+
+
+# add configs
+- name: add main supervisord.conf
+  template:
+    src: etc/supervisor/supervisord.conf.j2
+    dest: /etc/supervisor/supervisord.conf
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  become: yes
+  notify: supervisor restart
+
+- name: add daemon config file for role
+  template:
+    src: etc/supervisor/conf.d/program.conf.j2
+    dest: /etc/supervisor/conf.d/{{ supervisor_program }}.conf
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  when: supervisor_program is defined
+  become: yes
+
+- name: add group config
+  template:
+    src: etc/supervisor/conf.d/group.conf.j2
+    dest: /etc/supervisor/conf.d/group.{{ supervisor_group }}.conf
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  when: supervisor_group is defined
+  become: yes
